@@ -12,11 +12,17 @@ function App() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const controller = new AbortController();
+
     axios
-      .get<Todo[]>("https://jsonplaceholder.typicode.com/gtodos")
+      .get<Todo[]>("https://jsonplaceholder.typicode.com/todos", {signal: controller.signal})
       .then((res) => setTodos(res.data))
-      .catch(err => setError(err.message) );
+      .catch(err => {
+        if (err instanceof CanceledError) return;
+        setError(err.message);
+      } );
        
+    return () => controller.abort();
   }, []);
 
   return (
