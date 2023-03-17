@@ -40,13 +40,14 @@ function App() {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="py-10 text-lg text-center">Todo App Fetching with API</h1>
+    <div className="p-4 flex flex-col">
+      <h1 className="py-10 text-2xl text-center text-slate-800">Todo App Fetching with API</h1>
       {error && <p className="text-red-600 py-5">{error}</p>}
+      <button className="border px-4 py-1 rounded-2xl bg-indigo-500 justify-end my-4 text-slate-50">Create new Todo  + </button>
       <ul className="">
         {todos.map((todo) => (
           <li key={todo.id} className="flex justify-between space-y-2">
-            <div className="max-w-[15rem] md:w-full">{todo.title}</div>
+            <div className="max-w-[15rem] md:w-full text-lg text-slate-700">{todo.title}</div>
             <div className="">
               <button className="border px-4 py-1 rounded-full bg-blue-400 mr-2 hover:opacity-80">
                 Update
