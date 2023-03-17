@@ -11,6 +11,7 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState("");
 
+  
   useEffect(() => {
     const controller = new AbortController();
 
@@ -27,19 +28,31 @@ function App() {
     return () => controller.abort();
   }, []);
 
+  const deleteTodo = (todo: Todo) => {
+    const originalTodos = [...todo];
+    setTodos(todos.filter(t => t.id !== todo.id))
+
+     axios.delete('https://jsonplaceholder.typicode.com/todos' + todo.id)
+     .catch(err => {
+      setError(err.message);
+      setTodos(originalTodos);
+     })
+  };
+
   return (
     <div className="p-4">
       <h1 className="py-10 text-lg text-center">Todo App Fetching with API</h1>
       {error && <p className="text-red-600 py-5">{error}</p>}
       <ul className="">
         {todos.map((todo) => (
-          <li key={todo.id} className="flex justify-between">
+          <li key={todo.id} className="flex justify-between space-y-2">
             <div className="max-w-[15rem] md:w-full">{todo.title}</div>
             <div className="">
-              <button className="border px-4 py-1 rounded-full bg-blue-400 mr-2">
+              <button className="border px-4 py-1 rounded-full bg-blue-400 mr-2 hover:opacity-80">
                 Update
               </button>
-              <button className="border px-4 py-1 rounded-full bg-red-400">
+              <button className="border px-4 py-1 rounded-full bg-yellow-300 hover:opacity-80"
+                      onClick={() => deleteTodo(todo)}>
                 Delete
               </button>
             </div>
