@@ -1,22 +1,31 @@
-import './App.css';
-import axios from 'axios';
-import {useState, useEffect} from 'react';
+import "./App.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
-
-
-function App() {
-  const [todos, setTodos] = useState([]);
-
-  useEffect(() => {
-   axios.get('https://jsonplaceholder.typicode.com/todos')
-        .then(res => console.log(res))
-}, [])
-
-  return (
-    <div className="App">
-
-    </div>
-  )
+interface Todo {
+  id: number;
+  title: string;
 }
 
-export default App
+function App() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    axios
+      .get<Todo[]>("https://jsonplaceholder.typicode.com/todos")
+      .then((res) => setTodos(res.data));
+  }, []);
+
+  return (
+    <>
+      <h1 className="py-10 text-lg">Todo App Fetching with API</h1>
+      <ul className="">
+        {todos.map((todo) => (
+          <li key={todo.id}>{todo.title}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+export default App;
