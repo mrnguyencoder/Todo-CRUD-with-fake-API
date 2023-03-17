@@ -9,19 +9,21 @@ interface Todo {
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
 
     axios
-      .get<Todo[]>("https://jsonplaceholder.typicode.com/todos", {signal: controller.signal})
+      .get<Todo[]>("https://jsonplaceholder.typicode.com/todos", {
+        signal: controller.signal,
+      })
       .then((res) => setTodos(res.data))
-      .catch(err => {
+      .catch((err) => {
         if (err instanceof CanceledError) return;
         setError(err.message);
-      } );
-       
+      });
+
     return () => controller.abort();
   }, []);
 
@@ -31,7 +33,17 @@ function App() {
       {error && <p className="text-red-600 py-5">{error}</p>}
       <ul className="">
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
+          <li key={todo.id} className="flex justify-between">
+            <div className="max-w-[15rem] md:w-full">{todo.title}</div>
+            <div className="">
+              <button className="border px-4 py-1 rounded-full bg-blue-400 mr-2">
+                Update
+              </button>
+              <button className="border px-4 py-1 rounded-full bg-red-400">
+                Delete
+              </button>
+            </div>
+          </li>
         ))}
       </ul>
     </div>
