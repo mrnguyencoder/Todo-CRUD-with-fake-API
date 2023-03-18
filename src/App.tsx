@@ -54,8 +54,15 @@ function App() {
   };
 
   const updateTodo = (todo: Todo) => {
+    const originalTodos = [...todos];
     const updateTodo = { ...todo, title: todo.title + 'New update'};
-    setTodos(todos.map(u => u.id == todo.id ? updateTodo : u))
+    setTodos(todos.map(u => u.id == todo.id ? updateTodo : u));
+
+    axios.patch("https://jsonplaceholder.typicode.com/todos/" + todo.id, updateTodo  )
+    .catch(err => {
+      setError(err.message);
+      setTodos(originalTodos);
+    })
   }
 
   return (
