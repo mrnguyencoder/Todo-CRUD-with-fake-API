@@ -53,6 +53,11 @@ function App() {
       });
   };
 
+  const updateTodo = (todo: Todo) => {
+    const updateTodo = { ...todo, title: todo.title + 'New update'};
+    setTodos(todos.map(u => u.id == todo.id ? updateTodo : u))
+  }
+
   return (
     <div className="p-4 flex flex-col">
       <h1 className="py-10 text-2xl text-center text-slate-800">
@@ -72,7 +77,8 @@ function App() {
               {todo.title}
             </div>
             <div className="">
-              <button className="border px-4 py-1 rounded-full bg-blue-400 mr-2 hover:opacity-80">
+              <button className="border px-4 py-1 rounded-full bg-blue-400 mr-2 hover:opacity-80"
+              onClick={() => updateTodo(todo)}>
                 Update
               </button>
               <button
